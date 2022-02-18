@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 $request = Request::createFromGlobals();
 
-$name = $request->attributes->get('name', 'World');
+$name = $request->query->get('name', 'World');
 
 $response = new Response(sprintf('Hello %s', htmlspecialchars($name, ENT_QUOTES, 'UTF-8')));
 
