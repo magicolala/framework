@@ -18,12 +18,11 @@ $context->fromRequest($request);
 $urlMatcher = new UrlMatcher($routes, $context);
 
 try {
-    extract($urlMatcher->match($request->getPathInfo()));
-    ob_start();
-    include __DIR__ . "/../src/pages/" . $_route . ".php";
-    $response = new Response(ob_get_clean());
+    $result= $urlMatcher->match($request->getPathInfo());
+    $request->attributes->add($result);
+    $response = call_user_func($result['callable'], $request);
 } catch (ResourceNotFoundException $e) {
-    $response = new Response("La page demandée n'existe pas.", 404);
+    $response = new Response("La page demandée n'existe pas. " . $e->getMessage(), 404);
 } catch (Exception $e) {
     $response = new Response("Une erreur est survenue. " . $e->getMessage(), 500);
 }
