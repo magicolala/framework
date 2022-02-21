@@ -16,6 +16,11 @@ $response = new Response();
 
 $pathInfo = $request->getPathInfo();
 
-include __DIR__ . '/src/pages/' . $map[$pathInfo];
+if (isset($map[$pathInfo])) {
+    include __DIR__ . '/src/pages/' . $map[$pathInfo];
+} else {
+    $response->setContent("La page demandéée n'existe pas");
+    $response->setStatusCode(404);
+}
 
 $response->send();
