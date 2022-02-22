@@ -18,9 +18,23 @@ $context->fromRequest($request);
 $urlMatcher = new UrlMatcher($routes, $context);
 
 try {
-    $result= $urlMatcher->match($request->getPathInfo());
+    $result = $urlMatcher->match($request->getPathInfo());
+
+    $className = substr(
+        $result["_controller"],
+        0,
+        strpos($result["_controller"], '@')
+    );
+
+    $methodName = substr(
+        $result["_controller"],
+        strpos($result["_controller"], '@') + 1
+    );
+
+    $controller = [new $className, $methodName];
+
     $request->attributes->add($result);
-    $response = call_user_func($result['_controller'], $request);
+    $response = call_user_func($controller, $request);
 } catch (ResourceNotFoundException $e) {
     $response = new Response("La page demandée n'existe pas. " . $e->getMessage(), 404);
 } catch (Exception $e) {
