@@ -1,7 +1,7 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use App\Controller\GreetingController;
+use App\Controller\PageController;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -9,15 +9,13 @@ $routes = new RouteCollection();
 
 $routes->add("hello", new Route("/hello/{name}", [
     "name" => "World",
-    "callable" => function (Request $request) {
-        $name = $request->attributes->get("name");
-        ob_start();
-        include __DIR__ . "/pages/hello.php";
-
-        return new Response(ob_get_clean());
-    }
+    "_controller" => [new GreetingController, 'hello']
 ]));
-$routes->add("bye", new Route("/bye"));
-$routes->add("about", new Route("/about"));
+$routes->add("bye", new Route("/bye", [
+    "_controller" => [new GreetingController, "bye"]
+]));
+$routes->add("about", new Route("/about", [
+    "_controller" => [new PageController(), "about"]
+]));
 
 return $routes;

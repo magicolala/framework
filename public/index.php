@@ -20,7 +20,7 @@ $urlMatcher = new UrlMatcher($routes, $context);
 try {
     $result= $urlMatcher->match($request->getPathInfo());
     $request->attributes->add($result);
-    $response = call_user_func($result['callable'], $request);
+    $response = call_user_func($result['_controller'], $request);
 } catch (ResourceNotFoundException $e) {
     $response = new Response("La page demandée n'existe pas. " . $e->getMessage(), 404);
 } catch (Exception $e) {
