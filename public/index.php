@@ -22,8 +22,7 @@ $controllerResolver = new ControllerResolver();
 $argumentResolver = new ArgumentResolver();
 
 try {
-    $result = $urlMatcher->match($request->getPathInfo());
-    $request->attributes->add($result);
+    $request->attributes->add($urlMatcher->match($request->getPathInfo()));
     $controller = $controllerResolver->getController($request);
     $arguments = $argumentResolver->getArguments($request, $controller);
     $response = call_user_func_array($controller, $arguments);
