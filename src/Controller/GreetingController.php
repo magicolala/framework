@@ -7,9 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GreetingController
 {
-    public function hello(Request $request): Response
+    public function hello(Request $request, $name): Response
     {
-        $name = $request->attributes->get("name");
         ob_start();
         include __DIR__ . "/../pages/hello.php";
 
