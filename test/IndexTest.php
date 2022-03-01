@@ -1,17 +1,18 @@
 <?php
 
+use Framework\Simplex;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 class IndexTest extends TestCase
 {
     public function testHello()
     {
-        $_GET['name'] = 'Fabien';
+        $framework = new Simplex;
 
-        ob_start();
-        include 'index.php';
-        $content = ob_get_clean();
+        $request = Request::create('hello/Lior');
+        $response = $framework->handle($request);
 
-        $this->assertEquals('Hello Fabien', $content);
+        $this->assertEquals('Hello Lior', $response->getContent());
     }
 }
